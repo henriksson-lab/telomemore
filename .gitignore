@@ -2,3 +2,4 @@ telomemore_workstation.ipynb
 telomemore.egg-info
 TESTAR
 .ipynb*
+__pycache__/*
