@@ -8,8 +8,8 @@ import pandas as pd
 class CountTelomeres(BaseKmerFinder):
     '''Counts number of telomeres in all bam files in the input folder'''
 
-    def __init__(self, input_folder: str, pattern: str, output_folder: str, cutoff: int):
-        super().__init__(input_folder, pattern, output_folder)
+    def __init__(self, input_folder: str, pattern: str, output_folder: str, cutoff: int, threads: int = 1):
+        super().__init__(input_folder, pattern, output_folder, threads)
         self.cutoff = cutoff
         
 
@@ -32,32 +32,29 @@ class CountTelomeres(BaseKmerFinder):
         return telomeres_cells, total_reads_cells, missed_barcodes
         
     
-    def run_program(self) -> None:
+    def _run_program(self, file: Path) -> None:
         '''Generates teleomere counts for each bam file in the input folder. Writes the results as csv files.'''
-        
-        for file in self.bam.files:
             
-            telomere_file = self.out_folder / f'{file.stem}_telomeres_{self.pattern.pattern}.csv'
-            totalreads_file = self.out_folder / f'{file.stem}_total_reads.csv'
-            missed_barcods_file = self.out_folder / f'{file.stem}_missed_barcodes.txt'
-            
-            sam = pysam.AlignmentFile(file, 'rb')
-            
-            print(f'Looking for {self.pattern.pattern} in {file}')
-            
-            telomeres_dict, total_dict, missed_barcodes = self._telomere_counts(sam)
+        telomere_file = self.out_folder / f'{file.stem}_telomeres_{self.pattern.pattern}.csv'
+        totalreads_file = self.out_folder / f'{file.stem}_total_reads.csv'
+        missed_barcods_file = self.out_folder / f'{file.stem}_missed_barcodes.txt'
 
-            with open(telomere_file, 'a+') as telomere:
-                for key, value in telomeres_dict.items():
-                    print(f'{key},{value}', file=telomere)
+        sam = pysam.AlignmentFile(file, 'rb')
 
-            with open(totalreads_file, 'a+') as total:
-                for key, value in total_dict.items():
-                    print(f'{key},{value}', file=total)
+        telomeres_dict, total_dict, missed_barcodes = self._telomere_counts(sam)
 
-            with open(missed_barcods_file, 'w+') as missed:
-                print(f'Number of missed barcodes = {missed_barcodes}', file=missed)
-                
-            print(f'Done with {file}')
+        with open(telomere_file, 'a+') as telomere:
+            for key, value in telomeres_dict.items():
+                print(f'{key},{value}', file=telomere)
+
+        with open(totalreads_file, 'a+') as total:
+            for key, value in total_dict.items():
+                print(f'{key},{value}', file=total)
+
+        with open(missed_barcods_file, 'w+') as missed:
+            print(f'Number of missed barcodes = {missed_barcodes}', file=missed)
+            
+
+
 
 
