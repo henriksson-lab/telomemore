@@ -22,8 +22,6 @@ class CountTelomeres(BaseKmerFinder):
         for read in sam:
             try:
                 total_reads_cells[read.get_tag('CB')] += 1 
-                # adds the key to the dict and initializes it to 0 
-                telomeres_cells[read.get_tag('CB')]
                 if self._number_telomers(read.seq) >= self.cutoff:
                     telomeres_cells[read.get_tag('CB')] += 1
             except Exception:
