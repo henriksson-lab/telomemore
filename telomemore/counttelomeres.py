@@ -34,10 +34,11 @@ class CountTelomeres(BaseKmerFinder):
     
     def _run_program(self, file: Path) -> None:
         '''Generates teleomere counts for each bam file in the input folder. Writes the results as csv files.'''
-            
-        telomere_file = self.out_folder / f'{file.stem}_telomeres_{self.pattern.pattern}.csv'
-        totalreads_file = self.out_folder / f'{file.stem}_total_reads.csv'
-        missed_barcods_file = self.out_folder / f'{file.stem}_missed_barcodes.txt'
+        
+        # part[-3] is the name of the folder which contains the out folder and the possorted.bam file 
+        telomere_file = self.out_folder / f'{file.parts[-3]}_telomeres_{self.pattern.pattern}.csv'
+        totalreads_file = self.out_folder / f'{file.parts[-3]}_total_reads.csv'
+        missed_barcods_file = self.out_folder / f'{file.parts[-3]}_missed_barcodes.txt'
 
         sam = pysam.AlignmentFile(file, 'rb')
 

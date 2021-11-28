@@ -33,9 +33,9 @@ class CountKmers(BaseKmerFinder):
 
         counter, missed_reads = self._k_mer_per_read(sam)
 
-        # TODO the folder name instead of file name
-        kmer_file = self.out_folder / f'{file.stem}_{self.pattern.pattern}_kmer.csv'
-        exception_file = self.out_folder / f'{file.stem}_missed_reads.txt'
+        # part[-3] is the name of the folder which contains the out folder and the possorted.bam file 
+        kmer_file = self.out_folder / f'{file.parts[-3]}_{self.pattern.pattern}_kmer.csv'
+        exception_file = self.out_folder / f'{file.parts[-3]}_missed_reads.txt'
 
         number = [key for key in counter.keys()]
         count = [value for value in counter.values()]
