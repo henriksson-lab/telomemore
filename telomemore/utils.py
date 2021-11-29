@@ -8,7 +8,7 @@ class BamFile:
     
     def __init__(self, folder: str):
         self.folder = Path(folder)
-        self.files = sorted([bam for bam in self.folder.rglob('*.bam') if bam.is_file()])
+        self.files = sorted([bam.resolve() for bam in self.folder.rglob('*.bam') if bam.is_file()])
 
 class BaseKmerFinder:
     '''Superclass for finding kmer in bam file.'''
