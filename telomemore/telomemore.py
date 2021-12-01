@@ -26,7 +26,7 @@ class TeloMemore:
         if self.barcode is not None:
             for bam, bc in zip(self.files.files, self.barcode.files):
                 print(f'processing {bam}...')
-                telomere, total, missed = self.output_files(file)
+                telomere, total, missed = self.output_files(bam)
                 self.program.run_program(bam, bc, self.cutoff, self.pattern, telomere, total, missed)
                 print(f'{bam} done!')
 
@@ -34,7 +34,7 @@ class TeloMemore:
         else:
             for bam in self.files.files:
                 print(f'processing {bam}...')
-                telomere, total, missed = self.output_files(file)
+                telomere, total, missed = self.output_files(bam)
                 self.program.run_program(bam, self.cutoff, self.pattern, telomere, total, missed)
                 print(f'{bam} done!')
             
