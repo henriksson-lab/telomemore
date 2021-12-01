@@ -24,6 +24,7 @@ class TeloMemore:
   
     def run_program(self) -> None:
         if self.barcode is not None:
+            print('bc')
             for bam, bc in zip(self.files.files, self.barcode.files):
                 print(f'processing {bam}...')
                 telomere, total, missed = self.output_files(bam)

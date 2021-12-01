@@ -10,6 +10,6 @@ class Barcodes:
         if Path(path).is_file():
             return [Path(path)]
         
-        return sorted([bc for bc in Path(path).rglob('filtered_peak_bc_matrix/barcodes.tsv')])
+        return sorted([bc for bc in Path(path).rglob('*outs/filtered_peak_bc_matrix/barcodes.tsv')])
     
 #WORKS
