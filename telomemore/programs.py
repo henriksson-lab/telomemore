@@ -69,8 +69,8 @@ class BarcodeProgramTelomemore(ProgramTelomemore):
         sam = pysam.AlignmentFile(sam, 'rb')
         barcode = pd.read_csv(barcode, header=None, delimiter='\t', names=['bc'])
         
-        telomeres_cells = dict().fromkeys(barcodes['bc'].to_list(), 0)
-        total_reads_cells = dict().fromkeys(barcodes['bc'].to_list(), 0)
+        telomeres_cells = dict().fromkeys(barcode['bc'].to_list(), 0)
+        total_reads_cells = dict().fromkeys(barcode['bc'].to_list(), 0)
         missed_barcodes = 0
 
         for read in sam:
@@ -83,7 +83,7 @@ class BarcodeProgramTelomemore(ProgramTelomemore):
             else:
                 if cb in total_reads_cells:
                     total_reads_cells[cb] += 1
-                if cb in telomeres_cells and self.number_telomers(pattern, seq) >= cutoff:
+                if cb in telomeres_cells and self.number_telomere(pattern, seq) >= cutoff:
                     telomeres_cells[cb] += 1
 
         return telomeres_cells, total_reads_cells, missed_barcodes
