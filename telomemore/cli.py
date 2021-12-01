@@ -101,11 +101,11 @@ def TESTAR(inputs, barcodes, pattern, cutoff, output):
         program = BarcodeProgramTelomemore()
         barcodes = Barcodes(barcodes)
         telomemore = TeloMemore(pattern=pattern, files=files, program=program, cutoff=cutoff, barcode=barcodes, output_dir=output)
-        print(telomemore)
+        telomemore.run_program()
     else:
         program = NobarcodeProgramTelomemore()
         telomemore = TeloMemore(pattern=pattern, files=files, program=program, cutoff=cutoff, output_dir=output)
-        print(telomemore)
+        telomemore.run_program()
     
     
     
