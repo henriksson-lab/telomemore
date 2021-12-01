@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 import pysam
 import pandas as pd
 from pathlib import Path
+from collections import defaultdict
 
 class ProgramTelomemore(ABC):
         
