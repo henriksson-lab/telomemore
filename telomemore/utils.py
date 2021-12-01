@@ -13,7 +13,7 @@ class BamFile:
 class BaseKmerFinder:
     '''Superclass for finding kmer in bam file.'''
     
-    def __init__(self, folder: str, pattern: str, out_folder: str, threads: int = 1):
+    def __init__(self, folder: str, pattern: str, out_folder: str, threads: int):
         self.bam = BamFile(folder)
         self.pattern = re.compile(pattern)
         self.out_folder = Path(out_folder).resolve()
