@@ -1,5 +1,9 @@
 # telomemore
 
+## TODO
+*add progress counter (10M reads?)
+*naming of files to one folder up?
+
 
 [![image](https://img.shields.io/pypi/v/telomemore.svg)](https://pypi.python.org/pypi/telomemore)
 
@@ -13,7 +17,7 @@
 
 ## Features
 
--   TODO
+
 
 ## Credits
 
