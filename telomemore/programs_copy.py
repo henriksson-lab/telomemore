@@ -46,6 +46,7 @@ class NobarcodeProgramTelomemore_copy(ProgramTelomemore):
         sam_file = pysam.AlignmentFile(sam, 'rb')
         telomeres_cells = defaultdict(Count)
         missed_barcodes = 0
+        rev_comp = self.reverse_comp(pattern)
 
         for read in tqdm(sam_file):
             try:
@@ -56,11 +57,11 @@ class NobarcodeProgramTelomemore_copy(ProgramTelomemore):
                 missed_barcodes += 1
             else:
                 telomeres_cells[cb].total += 1 
-                if self.number_telomere(pattern, seq) >= cutoff:
+                if self.number_telomere(pattern, seq) >= cutoff or self.number_telomere(rev_comp, seq) >= cutoff:
                     telomeres_cells[cb].telomere += 1
                     
             if self.counter % 10000000 == 0:
-                print(f'Reads processed: {self.counter}')
+                print(f'Reads processed: {self.counter / 10000000} M')
             self.counter += 1
                     
         print(f'Number of missed barcodes or reads: {missed_barcodes} in {sam}')
@@ -87,6 +88,7 @@ class BarcodeProgramTelomemore_copy(ProgramTelomemore):
         barcode = pd.read_csv(barcode, header=None, delimiter='\t', names=['bc'])
         telomeres_cells = {x: Count() for x in barcode['bc'].to_list()}
         missed_barcodes = 0
+        rev_comp = self.reverse_comp(pattern)
 
         for read in tqdm(sam_file):
             try:
@@ -98,11 +100,11 @@ class BarcodeProgramTelomemore_copy(ProgramTelomemore):
             else:
                 if cb in telomeres_cells:
                     telomeres_cells[cb].total += 1
-                    if self.number_telomere(pattern, seq) >= cutoff:
+                    if self.number_telomere(pattern, seq) >= cutoff or self.number_telomere(rev_comp, seq) >= cutoff:
                         telomeres_cells[cb].telomere += 1
                         
             if self.counter % 10000000 == 0:
-                print(f'Reads processed: {self.counter}')
+                print(f'Reads processed: {self.counter / 10000000} M')
             self.counter += 1
                 
         print(f'Number of missed barcodes or reads: {missed_barcodes} in {sam}')
