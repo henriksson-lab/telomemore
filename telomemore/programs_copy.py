@@ -9,7 +9,6 @@ import pandas as pd
 from pathlib import Path
 from collections import defaultdict, namedtuple
 from dataclasses import dataclass
-from tqdm import tqdm
 
 @dataclass
 class Count:
@@ -48,7 +47,7 @@ class NobarcodeProgramTelomemore_copy(ProgramTelomemore):
         missed_barcodes = 0
         rev_comp = self.reverse_comp(pattern)
 
-        for read in tqdm(sam_file):
+        for read in sam_file:
             try:
                 cb = read.get_tag('CB')
                 seq = read.seq
@@ -61,7 +60,7 @@ class NobarcodeProgramTelomemore_copy(ProgramTelomemore):
                     telomeres_cells[cb].telomere += 1
                     
             if self.counter % 10000000 == 0:
-                print(f'Reads processed: {self.counter / 10000000} M')
+                print(f'Reads processed: {self.counter / 1000000} M')
             self.counter += 1
                     
         print(f'Number of missed barcodes or reads: {missed_barcodes} in {sam}')
@@ -74,7 +73,7 @@ class NobarcodeProgramTelomemore_copy(ProgramTelomemore):
                           'total': [x.total for x in telomeres_cells.values()]})
         df['fraction'] = df['count'] / df['total']
         df['pattern'] = pattern
-        df['file'] = sam
+        df['file'] = bam_file
         df.to_csv(telomere_file, index=False)
         
 
@@ -90,7 +89,7 @@ class BarcodeProgramTelomemore_copy(ProgramTelomemore):
         missed_barcodes = 0
         rev_comp = self.reverse_comp(pattern)
 
-        for read in tqdm(sam_file):
+        for read in sam_file:
             try:
                 cb = read.get_tag('CB')
                 seq = read.seq
@@ -104,7 +103,7 @@ class BarcodeProgramTelomemore_copy(ProgramTelomemore):
                         telomeres_cells[cb].telomere += 1
                         
             if self.counter % 10000000 == 0:
-                print(f'Reads processed: {self.counter / 10000000} M')
+                print(f'Reads processed: {self.counter / 1000000} M')
             self.counter += 1
                 
         print(f'Number of missed barcodes or reads: {missed_barcodes} in {sam}')
@@ -117,5 +116,5 @@ class BarcodeProgramTelomemore_copy(ProgramTelomemore):
                           'total': [x.total for x in telomeres_cells.values()]})
         df['fraction'] = df['count'] / df['total']
         df['pattern'] = pattern
-        df['file'] = sam
+        df['file'] = bam_file
         df.to_csv(telomere_file, index=False)
